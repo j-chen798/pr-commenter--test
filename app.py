@@ -63,6 +63,7 @@ def handle_pull_request(data):
 
 @app.route("/webhook", methods=["POST"])
 def webhook():
+    print("Webhook received")
     signature = request.headers.get("X-Hub-Signature-256")
     payload = request.get_data()
     if not verify_signature(payload, signature):

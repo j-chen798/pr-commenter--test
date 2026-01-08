@@ -11,7 +11,7 @@ app = Flask(__name__)
 
 WEBHOOK_SECRET = os.environ["GITHUB_WEBHOOK_SECRET"]
 APP_ID = os.environ["GITHUB_APP_ID"]
-with open("pr-commenter--test/private-key.pem", "r") as f:
+with open("private-key.pem", "r") as f:
     PRIVATE_KEY = f.read()
 
 

@@ -67,6 +67,9 @@ def webhook():
         abort(400)
     event = request.headers.get("X-GitHub-Event")
     data = request.json
+
+    print("Event type:", event)
+    print("Data:", data)
     if event == "pull_request":
         handle_pull_request(data)
     return "OK", 204

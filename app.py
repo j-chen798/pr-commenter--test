@@ -41,13 +41,16 @@ def get_installation_token(installation_id):
 def comment_on_pr(repo, pr_number, token, message):
     url = f"https://api.github.com/repos/{repo}/issues/{pr_number}/comments"
     headers = {
-        "Authorization": f"Bearer {token}",
+        "Authorization": f"token {token}",  
         "Accept": "application/vnd.github+json",
     }
-    data = {
-        "body": message,
-    }
+
+    data = {"body": message}
     response = requests.post(url, headers=headers, json=data)
+    print("GitHub API response:", response.status_code, response.text)
+    if response.status_code != 201:
+        print("Failed to post comment")
+    return response
     
 def handle_pull_request(data):
     action = data["action"]

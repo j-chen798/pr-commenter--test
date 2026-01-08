@@ -12,6 +12,9 @@ app = Flask(__name__)
 WEBHOOK_SECRET = os.environ["GITHUB_WEBHOOK_SECRET"]
 APP_ID = os.environ["GITHUB_APP_ID"]
 PRIVATE_KEY = os.environ["GITHUB_PRIVATE_KEY"]
+with open("pr-commenter--test/private-key.pem", "r") as f:
+    PRIVATE_KEY = f.read()
+
 
 def verify_signature(payload, signature):
     mac = hmac.new(WEBHOOK_SECRET.encode(), payload, hashlib.sha256)

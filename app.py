@@ -11,8 +11,8 @@ app = FastAPI()
 
 load_dotenv()
 
-WEBHOOK_SECRET = os.environ["GITHUB_WEBHOOK_SECRET"]
-APP_ID = os.environ["GITHUB_APP_ID"]
+WEBHOOK_SECRET = os.environ.get("GITHUB_WEBHOOK_SECRET")
+APP_ID = os.environ.get("GITHUB_APP_ID")
 with open("private-key.pem", "r") as f:
     PRIVATE_KEY = f.read()
 
@@ -55,7 +55,7 @@ def comment_on_pr(repo, pr_number, token, message):
     return response
     
 def handle_pull_request(data):
-    action = data["action"]
+    action = data.get("action")
     if action not in ["opened", "synchronize"]:
         return
     

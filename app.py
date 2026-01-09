@@ -1,3 +1,4 @@
+from dotenv import load_dotenv
 import os
 import hmac
 import hashlib
@@ -7,6 +8,8 @@ import requests
 from fastapi import FastAPI, Request
 
 app = FastAPI()
+
+load_dotenv()
 
 WEBHOOK_SECRET = os.environ["GITHUB_WEBHOOK_SECRET"]
 APP_ID = os.environ["GITHUB_APP_ID"]

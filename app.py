@@ -4,10 +4,9 @@ import hashlib
 import time
 import jwt
 import requests
-from flask import Flask, request, abort
 from fastapi import FastAPI, Request
 
-app = Flask(__name__)
+app = FastAPI(__name__)
 
 WEBHOOK_SECRET = os.environ["GITHUB_WEBHOOK_SECRET"]
 APP_ID = os.environ["GITHUB_APP_ID"]
@@ -63,19 +62,34 @@ def handle_pull_request(data):
     pr_number = data["number"]
     comment_on_pr(repo, pr_number, token, "Thanks for the PR!")
 
-
-@app.route("/webhook", methods=["POST"])
-def webhook():
+@app.post("/webhook")
+async def webhook(request: Request):
     print("Webhook received")
     signature = request.headers.get("X-Hub-Signature-256")
-    payload = request.get_data()
+    payload = await request.body()
     if not verify_signature(payload, signature):
-       abort(400)
+       return {"error": "Invalid signature"}, 400
     event = request.headers.get("X-GitHub-Event")
-    data = request.json
+    data = await request.json()
 
     print("Event type:", event)
     print("Data:", data)
     if event == "pull_request":
         handle_pull_request(data)
     return "OK", 204
+
+# @app.route("/webhook", methods=["POST"])
+# def webhook():
+#     print("Webhook received")
+#     signature = request.headers.get("X-Hub-Signature-256")
+#     payload = request.get_data()
+#     if not verify_signature(payload, signature):
+#        abort(400)
+#     event = request.headers.get("X-GitHub-Event")
+#     data = request.json
+
+#     print("Event type:", event)
+#     print("Data:", data)
+#     if event == "pull_request":
+#         handle_pull_request(data)
+#     return "OK", 204

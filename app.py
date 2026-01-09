@@ -6,7 +6,7 @@ import jwt
 import requests
 from fastapi import FastAPI, Request
 
-app = FastAPI(__name__)
+app = FastAPI()
 
 WEBHOOK_SECRET = os.environ["GITHUB_WEBHOOK_SECRET"]
 APP_ID = os.environ["GITHUB_APP_ID"]
